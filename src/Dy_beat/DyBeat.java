@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,9 +20,6 @@ public class DyBeat extends JFrame{
 	private Image screenImage;
 	
 	private Image background = new ImageIcon(Main.class.getResource("../imgs/introBg.jpg")).getImage();;
-	// title img
-	private Image titleImage = new ImageIcon(Main.class.getResource("../imgs/poem.png")).getImage();
-	private Image selectedImage = new ImageIcon(Main.class.getResource("../imgs/i1.png")).getImage();;
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../imgs/manuBar.png")));
 	
@@ -56,6 +54,13 @@ public class DyBeat extends JFrame{
 	
 	private boolean isMainScreen = false;
 	
+	ArrayList<Track> trackList = new ArrayList<Track>();
+	
+	private Image titleImage;// title img
+	private Image selectedImage;
+	private Music selectedMusic;
+	private int nowSelected = 0;
+	
 	public DyBeat() {
 		setUndecorated(true);
 		setTitle("Dynamic Beat");
@@ -66,6 +71,13 @@ public class DyBeat extends JFrame{
 		setVisible(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
+		
+		Music introMusic = new Music("introMusic.mp3", true);
+		introMusic.start();
+		
+		trackList.add(new Track("titleImage01.png", "startImage01.png", "gameImage01.png", "music01_selected.mp3", "music01.mp3"));
+		trackList.add(new Track("titleImage02.png", "startImage02.png", "gameImage02.png", "music02_selected.mp3", "music02.mp3"));
+		trackList.add(new Track("titleImage03.png", "startImage03.png", "gameImage03.png", "music03_selected.mp3", "music03.mp3"));
 		
 		// close button //
 		exitButton.setBounds(1245, 0, 30, 30);
@@ -123,6 +135,8 @@ public class DyBeat extends JFrame{
 				Music buttonPressedMusic = new Music("iuo.mp3", false);
 				buttonPressedMusic.start();
 				// game start event
+				introMusic.close();
+				selectTrack(0);
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
@@ -169,7 +183,7 @@ public class DyBeat extends JFrame{
 		
 		// left button //
 		leftButton.setVisible(false);
-		leftButton.setBounds(140, 330, 64, 64);
+		leftButton.setBounds(140, 400, 64, 64);
 		leftButton.setBorderPainted(false);
 		leftButton.setContentAreaFilled(false);
 		leftButton.setFocusPainted(false);
@@ -188,9 +202,10 @@ public class DyBeat extends JFrame{
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Music buttonPressedMusic = new Music("close.mp3", false);
+				Music buttonPressedMusic = new Music("ddr.mp3", false);
 				buttonPressedMusic.start();
 				// left button event
+				selectLeft();
 			}
 		});
 		add(leftButton);
@@ -198,7 +213,7 @@ public class DyBeat extends JFrame{
 	
 		// right button //
 		rightButton.setVisible(false);
-		rightButton.setBounds(1080, 330, 64, 64);
+		rightButton.setBounds(1080, 400, 64, 64);
 		rightButton.setBorderPainted(false);
 		rightButton.setContentAreaFilled(false);
 		rightButton.setFocusPainted(false);
@@ -217,9 +232,10 @@ public class DyBeat extends JFrame{
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Music buttonPressedMusic = new Music("close.mp3", false);
+				Music buttonPressedMusic = new Music("ddr.mp3", false);
 				buttonPressedMusic.start();
 				// right button event
+				selectRight();
 			}
 		});
 		add(rightButton);
@@ -243,8 +259,6 @@ public class DyBeat extends JFrame{
 		});
 		add(menuBar);
 		
-		Music introMusic = new Music("introMusic.mp3", true);
-		introMusic.start();
 	}
 	
 	public void paint(Graphics g) {
@@ -257,12 +271,39 @@ public class DyBeat extends JFrame{
 	public void screenDraw(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		if(isMainScreen) {
-			g.drawImage(selectedImage, 340, 100, null);
-			g.drawImage(titleImage, 340, 70, null);
+			g.drawImage(selectedImage, 340, 200, null);
+			g.drawImage(titleImage, 340, 170, null);
 		}
 		paintComponents(g);
 		this.repaint();
 	}
 	
+	public void selectTrack(int nowSelected) {
+		if(selectedMusic != null) {
+			selectedMusic.close();
+		}
+		titleImage = new ImageIcon(Main.class.getResource("../imgs/" + trackList.get(nowSelected).getTitleImage())).getImage();
+		selectedImage = new ImageIcon(Main.class.getResource("../imgs/" + trackList.get(nowSelected).getStartImage())).getImage();
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
+		selectedMusic.start();
+	}
+	
+	public void selectLeft() {
+		if(nowSelected == 0) {
+			nowSelected = trackList.size() - 1;
+		}else {
+			nowSelected--;
+		}
+		selectTrack(nowSelected);
+	}
+	
+	public void selectRight() {
+		if(nowSelected == trackList.size() - 1) {
+			nowSelected = 0;
+		}else {
+			nowSelected++;
+		}
+		selectTrack(nowSelected);
+	}
 
 }
