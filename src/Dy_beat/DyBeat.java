@@ -22,11 +22,6 @@ public class DyBeat extends JFrame{
 	private Graphics screenGraphic;
 	private Image screenImage;
 	private Image background = new ImageIcon(Main.class.getResource("../imgs/introBg.jpg")).getImage();;
-	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../imgs/gameInfo.png")).getImage();;
-	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../imgs/judgementLine.png")).getImage();;
-	private Image noteRouteImage = new ImageIcon(Main.class.getResource("../imgs/noteRoute.png")).getImage();;
-	private Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../imgs/noteRouteLine.png")).getImage();;
-	private Image noteBasicImage = new ImageIcon(Main.class.getResource("../imgs/noteBasic.png")).getImage();;
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../imgs/manuBar.png")));
 	
@@ -86,6 +81,8 @@ public class DyBeat extends JFrame{
 	private Music selectedMusic;
 	private int nowSelected = 0;
 	
+	public static Game game;
+	
 	public DyBeat() {
 		setUndecorated(true);
 		setTitle("Dynamic Beat");
@@ -97,11 +94,13 @@ public class DyBeat extends JFrame{
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
 		
+		addKeyListener(new KeyListener());
+		
 		introMusic.start();
 		
-		trackList.add(new Track("titleImage01.png", "startImage01.png", "gameImage01.png", "music01_selected.mp3", "music01.mp3"));
-		trackList.add(new Track("titleImage02.png", "startImage02.png", "gameImage02.png", "music02_selected.mp3", "music02.mp3"));
-		trackList.add(new Track("titleImage03.png", "startImage03.png", "gameImage03.png", "music03_selected.mp3", "music03.mp3"));
+		trackList.add(new Track("titleImage01.png", "startImage01.png", "gameImage01.png", "music01_selected.mp3", "music01.mp3", "IU - Love Poem"));
+		trackList.add(new Track("titleImage02.png", "startImage02.png", "gameImage02.png", "music02_selected.mp3", "music02.mp3", "Ã¢¸ð - Meteor"));
+		trackList.add(new Track("titleImage03.png", "startImage03.png", "gameImage03.png", "music03_selected.mp3", "music03.mp3", "Àå¹üÁØ - Èçµé¸®´Â ²Éµé ¼Ó¿¡¼­ ³× ¼¤ÇªÇâÀÌ ´À²¸Áø°Å¾ß"));
 		
 		// close button //
 		exitButton.setBounds(1245, 0, 30, 30);
@@ -282,7 +281,7 @@ public class DyBeat extends JFrame{
 				Music buttonPressedMusic = new Music("ddr.mp3", false);
 				buttonPressedMusic.start();
 				// easy mode event
-				gameStart(nowSelected, "easy");
+				gameStart(nowSelected, "Easy");
 			}
 		});
 		add(easyButton);
@@ -312,7 +311,7 @@ public class DyBeat extends JFrame{
 				Music buttonPressedMusic = new Music("ddr.mp3", false);
 				buttonPressedMusic.start();
 				// hard mode event
-				gameStart(nowSelected, "hard");
+				gameStart(nowSelected, "Hard");
 			}
 		});
 		add(hardButton);
@@ -382,50 +381,7 @@ public class DyBeat extends JFrame{
 			g.drawImage(titleImage, 340, 150, null);
 		}
 		if(isGameScreen) {
-			g.drawImage(noteRouteImage, 228, 30, null);
-			g.drawImage(noteRouteImage, 332, 30, null);
-			g.drawImage(noteRouteImage, 436, 30, null);
-			g.drawImage(noteRouteImage, 540, 30, null);
-			g.drawImage(noteRouteImage, 640, 30, null);
-			g.drawImage(noteRouteImage, 744, 30, null);
-			g.drawImage(noteRouteImage, 848, 30, null);
-			g.drawImage(noteRouteImage, 952, 30, null);
-			g.drawImage(noteRouteLineImage, 224, 30, null);
-			g.drawImage(noteRouteLineImage, 328, 30, null);
-			g.drawImage(noteRouteLineImage, 432, 30, null);
-			g.drawImage(noteRouteLineImage, 536, 30, null);
-			g.drawImage(noteRouteLineImage, 740, 30, null);
-			g.drawImage(noteRouteLineImage, 844, 30, null);
-			g.drawImage(noteRouteLineImage, 948, 30, null);
-			g.drawImage(noteRouteLineImage, 1052, 30, null);
-			g.drawImage(gameInfoImage, 0, 660, null);
-			g.drawImage(judgementLineImage, 0, 580, null);
-			g.drawImage(noteBasicImage, 228, 120, null);
-			g.drawImage(noteBasicImage, 332, 580, null);
-			g.drawImage(noteBasicImage, 436, 500, null);
-			g.drawImage(noteBasicImage, 540, 340, null);
-			g.drawImage(noteBasicImage, 640, 340, null);
-			g.drawImage(noteBasicImage, 744, 325, null);
-			g.drawImage(noteBasicImage, 848, 305, null);
-			g.drawImage(noteBasicImage, 952, 305, null);
-			g.setColor(Color.white);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setFont(new Font("Arial", Font.BOLD, 30));
-			g.drawString("IU - Love Poem", 20, 702);
-			g.drawString("EASY", 1190, 702);
-			g.setFont(new Font("Arial", Font.PLAIN, 26));
-			g.setColor(Color.DARK_GRAY);
-			g.drawString("S", 270, 609);
-			g.drawString("D", 374, 609);
-			g.drawString("F", 478, 609);
-			g.drawString("Space Bar", 580, 609);
-			g.drawString("J", 784, 609);
-			g.drawString("K", 889, 609);
-			g.drawString("L", 993, 609);
-			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Elephant", Font.BOLD, 30));
-			g.drawString("000000", 565, 702);
-			
+			game.screenDraw(g);
 		}
 		paintComponents(g);
 		this.repaint();
@@ -471,6 +427,8 @@ public class DyBeat extends JFrame{
 		background = new ImageIcon(Main.class.getResource("../imgs/" + trackList.get(nowSelected).getGameImage())).getImage();
 		backButton.setVisible(true);
 		isGameScreen = true;
+		setFocusable(true);
+		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
 	}
 	
 	public void backMain() {
@@ -483,6 +441,7 @@ public class DyBeat extends JFrame{
 		backButton.setVisible(false);
 		selectTrack(nowSelected);
 		isGameScreen = false;
+		game.close();
 	}
 	
 	public void enterMain() {
