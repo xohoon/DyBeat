@@ -11,7 +11,7 @@ public class DyBeat extends JFrame{
 	private Image screenImage;
 	private Graphics screenGraphic;
 	
-	private Image mainBackground;
+	private Image introBackground;
 	
 	public DyBeat() {
 		setTitle("Dynamic Beat");
@@ -21,7 +21,10 @@ public class DyBeat extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		mainBackground = new ImageIcon(Main.class.getResource("../imgs/MainBg.jpg")).getImage();
+		introBackground = new ImageIcon(Main.class.getResource("../imgs/introBg.jpg")).getImage();
+		
+		Music introMusic = new Music("introMusic.mp3", true);
+		introMusic.start();
 	}
 	
 	public void paint(Graphics g) {
@@ -32,7 +35,7 @@ public class DyBeat extends JFrame{
 	}
 	
 	public void screenDraw(Graphics g) {
-		g.drawImage(mainBackground, 0, 0, null);
+		g.drawImage(introBackground, 0, 0, null);
 		this.repaint();
 	}
 	
