@@ -259,7 +259,7 @@ public class DyBeat extends JFrame{
 		
 		// easy button //
 		easyButton.setVisible(false);
-		easyButton.setBounds(375, 650, 250, 67);
+		easyButton.setBounds(375, 640, 250, 67);
 		easyButton.setBorderPainted(false);
 		easyButton.setContentAreaFilled(false);
 		easyButton.setFocusPainted(false);
@@ -289,7 +289,7 @@ public class DyBeat extends JFrame{
 				
 		// hard button //
 		hardButton.setVisible(false);
-		hardButton.setBounds(655, 650, 250, 67);
+		hardButton.setBounds(655, 640, 250, 67);
 		hardButton.setBorderPainted(false);
 		hardButton.setContentAreaFilled(false);
 		hardButton.setFocusPainted(false);
