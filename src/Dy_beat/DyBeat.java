@@ -84,6 +84,10 @@ public class DyBeat extends JFrame{
 	public static Game game;
 	
 	public DyBeat() {
+		trackList.add(new Track("titleImage01.png", "startImage01.png", "gameImage01.png", "music01_selected.mp3", "music01.mp3", "IU - Love Poem"));
+		trackList.add(new Track("titleImage02.png", "startImage02.png", "gameImage02.png", "music02_selected.mp3", "music02.mp3", "CHANGMO - Meteor"));
+		trackList.add(new Track("titleImage03.png", "startImage03.png", "gameImage03.png", "music03_selected.mp3", "music03.mp3", "JBJ - shaking flowers"));
+
 		setUndecorated(true);
 		setTitle("Dynamic Beat");
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
@@ -97,10 +101,6 @@ public class DyBeat extends JFrame{
 		addKeyListener(new KeyListener());
 		
 		introMusic.start();
-		
-		trackList.add(new Track("titleImage01.png", "startImage01.png", "gameImage01.png", "music01_selected.mp3", "music01.mp3", "IU - Love Poem"));
-		trackList.add(new Track("titleImage02.png", "startImage02.png", "gameImage02.png", "music02_selected.mp3", "music02.mp3", "Ã¢¸ð - Meteor"));
-		trackList.add(new Track("titleImage03.png", "startImage03.png", "gameImage03.png", "music03_selected.mp3", "music03.mp3", "Àå¹üÁØ - Èçµé¸®´Â ²Éµé ¼Ó¿¡¼­ ³× ¼¤ÇªÇâÀÌ ´À²¸Áø°Å¾ß"));
 		
 		// close button //
 		exitButton.setBounds(1245, 0, 30, 30);
@@ -384,6 +384,11 @@ public class DyBeat extends JFrame{
 			game.screenDraw(g);
 		}
 		paintComponents(g);
+		try {
+			Thread.sleep(5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.repaint();
 	}
 	
@@ -427,8 +432,9 @@ public class DyBeat extends JFrame{
 		background = new ImageIcon(Main.class.getResource("../imgs/" + trackList.get(nowSelected).getGameImage())).getImage();
 		backButton.setVisible(true);
 		isGameScreen = true;
-		setFocusable(true);
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
+		game.start();
+		setFocusable(true);
 	}
 	
 	public void backMain() {

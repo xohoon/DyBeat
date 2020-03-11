@@ -37,8 +37,6 @@ public class Game extends Thread{
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
 		gameMusic = new Music(this.musicTitle, false);
-		gameMusic.start();
-		dropNotes(titleName);
 	}
 	
 	public void screenDraw(Graphics2D g) {
@@ -145,7 +143,7 @@ public class Game extends Thread{
 	
 	@Override
 	public void run() {
-		
+		dropNotes(this.titleName);
 	}
 	
 	public void close() {
@@ -154,9 +152,64 @@ public class Game extends Thread{
 	}
 	
 	public void dropNotes(String titleName) {
-		Note note = new Note(228, "short");
-		note.start();
-		noteList.add(note);
+		Beat[] beats = null;
+		if(titleName.equals("IU - Love Poem") && difficulty.equals("Easy")) {
+			int startTime = 1000 - Main.REACH_TIME * 1000;
+			int gap = 125;
+			beats = new Beat[] {
+					new Beat(startTime * 2, "Space"),
+					new Beat(startTime + gap * 6, "S"),
+					new Beat(startTime + gap * 1, "D"),
+					new Beat(startTime + gap * 7, "F"),
+					new Beat(startTime + gap * 2, "J"),
+					new Beat(startTime + gap * 4, "K"),
+					new Beat(startTime + gap * 7, "L"),
+			};
+		}else if(titleName.equals("IU - Love Poem") && difficulty.equals("Hard")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "Space"),
+			};
+		}else if(titleName.equals("CHANGMO - Meteor") && difficulty.equals("Easy")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "Space"),
+			};
+		}else if(titleName.equals("CHANGMO - Meteor") && difficulty.equals("Hard")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "Space"),
+			};
+		}else if(titleName.equals("JBJ - shaking flowers") && difficulty.equals("Easy")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "Space"),
+			};
+		}else if(titleName.equals("JBJ - shaking flowers") && difficulty.equals("Hard")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "Space"),
+			};
+		}
+		int i = 0;
+		gameMusic.start();
+		while(i < beats.length && !isInterrupted()) {
+			boolean dropped = false;
+			if(beats[i].getTime() <= gameMusic.getTime()) {
+				Note note = new Note(beats[i].getNoteName());
+				note.start();
+				noteList.add(note);
+				i++;
+				dropped = true;
+			}
+			if(!dropped) {
+				try {
+					Thread.sleep(5);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
