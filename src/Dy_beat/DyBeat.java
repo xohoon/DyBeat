@@ -42,6 +42,14 @@ public class DyBeat extends JFrame{
 	// quit button
 	private ImageIcon quitButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/quitEnter.png"));;
 	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/quitBasic.png"));;
+	
+	// easy button
+	private ImageIcon easyButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/easySelectButton.png"));;
+	private ImageIcon easyButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/easyBasicButton.png"));;
+	
+	// hard button
+	private ImageIcon hardButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/hardSelectButton.png"));;
+	private ImageIcon hardButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/hardBasicButton.png"));;
 
 	
 	private JButton exitButton = new JButton(exitButtonBasicImage);
@@ -49,6 +57,8 @@ public class DyBeat extends JFrame{
 	private JButton quitButton = new JButton(quitButtonBasicImage);
 	private JButton leftButton = new JButton(leftButtonBasicImage);
 	private JButton rightButton = new JButton(rightButtonBasicImage);
+	private JButton easyButton = new JButton(easyButtonBasicImage);
+	private JButton hardButton = new JButton(hardButtonBasicImage);
 	
 	private int mouseX, mouseY;
 	
@@ -141,6 +151,8 @@ public class DyBeat extends JFrame{
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
 				rightButton.setVisible(true);
+				easyButton.setVisible(true);
+				hardButton.setVisible(true);
 				background = new ImageIcon(Main.class.getResource("../imgs/gameBackground.jpg")).getImage();
 				isMainScreen = true;
 			}
@@ -240,7 +252,67 @@ public class DyBeat extends JFrame{
 		});
 		add(rightButton);
 		// right button //
+		
+		// easy button //
+		easyButton.setVisible(false);
+		easyButton.setBounds(375, 650, 250, 67);
+		easyButton.setBorderPainted(false);
+		easyButton.setContentAreaFilled(false);
+		easyButton.setFocusPainted(false);
+		easyButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				easyButton.setIcon(easyButtonEnterImage);
+				easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("iuo.mp3", false);
+				buttonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				easyButton.setIcon(easyButtonBasicImage);
+				easyButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("ddr.mp3", false);
+				buttonPressedMusic.start();
+				// easy mode event
+				gameStart(nowSelected, "easy");
+			}
+		});
+		add(easyButton);
+		// easy button //
 				
+		// hard button //
+		hardButton.setVisible(false);
+		hardButton.setBounds(655, 650, 250, 67);
+		hardButton.setBorderPainted(false);
+		hardButton.setContentAreaFilled(false);
+		hardButton.setFocusPainted(false);
+		hardButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				hardButton.setIcon(hardButtonEnterImage);
+				hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("iuo.mp3", false);
+				buttonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				hardButton.setIcon(hardButtonBasicImage);
+				hardButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("ddr.mp3", false);
+				buttonPressedMusic.start();
+				// hard mode event
+				gameStart(nowSelected, "hard");
+			}
+		});
+		add(hardButton);
+		// hard button //
+		
 		menuBar.setBounds(0, 0, 1280, 30);
 		menuBar.addMouseListener(new MouseAdapter() {
 			@Override
@@ -271,8 +343,8 @@ public class DyBeat extends JFrame{
 	public void screenDraw(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		if(isMainScreen) {
-			g.drawImage(selectedImage, 340, 200, null);
-			g.drawImage(titleImage, 340, 170, null);
+			g.drawImage(selectedImage, 340, 180, null);
+			g.drawImage(titleImage, 340, 150, null);
 		}
 		paintComponents(g);
 		this.repaint();
@@ -304,6 +376,19 @@ public class DyBeat extends JFrame{
 			nowSelected++;
 		}
 		selectTrack(nowSelected);
+	}
+	
+	public void gameStart(int nowSelected, String difficulty) {
+		if(selectedMusic != null) {
+			selectedMusic.close();
+		}
+		isMainScreen = false;
+		leftButton.setVisible(false);
+		rightButton.setVisible(false);
+		easyButton.setVisible(false);
+		hardButton.setVisible(false);
+		
+		background = new ImageIcon(Main.class.getResource("../imgs/" + trackList.get(nowSelected).getGameImage())).getImage();
 	}
 
 }
