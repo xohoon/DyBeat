@@ -18,12 +18,21 @@ public class DyBeat extends JFrame{
 	private Image screenImage;
 	private Graphics screenGraphic;
 	
-	private Image introBackground = new ImageIcon(Main.class.getResource("../imgs/introBg.jpg")).getImage();;
+	private Image background = new ImageIcon(Main.class.getResource("../imgs/introBg.jpg")).getImage();;
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../imgs/manuBar.png")));
 	
 	private ImageIcon exitButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/closeButtonEnter.png"));;
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/closeButtonBasic.png"));;
+	
+	private ImageIcon startButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/startEnter.png"));;
+	private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/startBasic.png"));;
+	
+	private ImageIcon quitButtonEnterImage = new ImageIcon(Main.class.getResource("../imgs/quitEnter.png"));;
+	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../imgs/quitBasic.png"));;
+
 	private JButton exitButton = new JButton(exitButtonBasicImage);
+	private JButton startButton = new JButton(startButtonBasicImage);
+	private JButton quitButton = new JButton(quitButtonBasicImage);
 	
 	private int mouseX, mouseY;
 	
@@ -38,6 +47,7 @@ public class DyBeat extends JFrame{
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
 		
+		// close button //
 		exitButton.setBounds(1245, 0, 30, 30);
 		exitButton.setBorderPainted(false);
 		exitButton.setContentAreaFilled(false);
@@ -68,6 +78,71 @@ public class DyBeat extends JFrame{
 			}
 		});
 		add(exitButton);
+		// close button //
+
+		// start button //
+		startButton.setBounds(40, 220, 400, 100);
+		startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				startButton.setIcon(startButtonEnterImage);
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("bbb.mp3", false);
+				buttonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				startButton.setIcon(startButtonBasicImage);
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("bbb.mp3", false);
+				buttonPressedMusic.start();
+				// game start event
+				startButton.setVisible(false);
+				quitButton.setVisible(false);
+				background = new ImageIcon(Main.class.getResource("../imgs/gameBackground.jpg")).getImage();
+			}
+		});
+		add(startButton);
+		// start button //
+		
+		// quit button //
+		quitButton.setBounds(40, 350, 400, 100);
+		quitButton.setBorderPainted(false);
+		quitButton.setContentAreaFilled(false);
+		quitButton.setFocusPainted(false);
+		quitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				quitButton.setIcon(quitButtonEnterImage);
+				quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("bbb.mp3", false);
+				buttonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				quitButton.setIcon(quitButtonBasicImage);
+				quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("close.mp3", false);
+				buttonPressedMusic.start();
+				try {
+					Thread.sleep(1000);
+				} catch(InterruptedException ex) {
+					ex.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		add(quitButton);
+		// quit button //
 		
 		menuBar.setBounds(0, 0, 1280, 30);
 		menuBar.addMouseListener(new MouseAdapter() {
@@ -99,7 +174,7 @@ public class DyBeat extends JFrame{
 	}
 	
 	public void screenDraw(Graphics g) {
-		g.drawImage(introBackground, 0, 0, null);
+		g.drawImage(background, 0, 0, null);
 		paintComponents(g);
 		this.repaint();
 	}
