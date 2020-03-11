@@ -61,7 +61,12 @@ public class Game extends Thread{
 		g.drawImage(judgementLineImage, 0, 580, null);
 		for(int i = 0; i < noteList.size(); i++) {
 			Note note = noteList.get(i);
-			note.screenDraw(g);
+			if(!note.isProceeded()) {
+				noteList.remove(i);
+				i--;
+			}else {
+				note.screenDraw(g);
+			}
 		}
 		g.setColor(Color.white);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -84,6 +89,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressS() {
+		judge("S");
 		noteRouteSImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("small01.mp3", false).start();
 	}
@@ -92,6 +98,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressD() {
+		judge("D");
 		noteRouteDImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("small02.mp3", false).start();
 	}
@@ -100,6 +107,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressF() {
+		judge("F");
 		noteRouteFImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("small03.mp3", false).start();
 	}
@@ -108,6 +116,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressSpace() {
+		judge("Space");
 		noteRouteSpace1Image = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		noteRouteSpace2Image = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("big03.mp3", false).start();
@@ -118,6 +127,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressJ() {
+		judge("J");
 		noteRouteJImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("big01.mp3", false).start();
 	}
@@ -126,6 +136,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressK() {
+		judge("K");
 		noteRouteKImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("big02.mp3", false).start();
 	}
@@ -134,6 +145,7 @@ public class Game extends Thread{
 	}
 	
 	public void pressL() {
+		judge("L");
 		noteRouteLImage = new ImageIcon(Main.class.getResource("../imgs/noteRoutePressed.png")).getImage();
 		new Music("big01.mp3", false).start();
 	}
@@ -212,4 +224,13 @@ public class Game extends Thread{
 		}
 	}
 
+	public void judge(String input) {
+		for(int i = 0; i < noteList.size(); i++) {
+			Note note = noteList.get(i);
+			if(input.equals(note.getNoteType())) {
+				note.judge();
+				break;
+			}
+		}
+	}
 }
